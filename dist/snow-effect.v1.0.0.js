@@ -5,8 +5,8 @@
     'use strict';
 
     /**
-     * Дожидаемся наличия jQuery. Если его нет — подгружаем из cdnjs.
-     * После загрузки jQuery вызываем колбэк initSnowEffect.
+     * Чекаємо наявності jQuery. Якщо його немає - довантажуємо з cdnjs.
+     * Після завантаження jQuery викликаємо колбек initSnowEffect.
      */
     function waitForJQuery(callback) {
         if (window.jQuery) {
@@ -14,7 +14,6 @@
         } else {
             var script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js';
-            // Чтобы не было проблем с CORS при загрузке jQuery, можно явно указать:
             script.crossOrigin = 'anonymous';
             script.onload = () => callback(window.jQuery);
             document.head.appendChild(script);
@@ -22,9 +21,8 @@
     }
 
     /**
-     * Функция инициализации снежного эффекта.
-     * Здесь мы создаём window.SnowEffect и прописываем ему методы start/stop/init.
-     */
+     * Функція ініціалізації снігового ефекту і його методи start/stop/init.
+    */
     function initSnowEffect(jQuery) {
         var $ = jQuery;
         var isRunning = false;
@@ -57,7 +55,7 @@
                         const response = await fetch(scriptUrl);
                         const data = await response.json();
                         
-                        // Применяем только валидные настройки
+                        // Застосовуємо тільки валідні налаштування
                         for (const [key, value] of Object.entries(data)) {
                             if (value !== undefined && value !== null && defaultSettings.hasOwnProperty(key)) {
                                 this.settings[key] = value;
@@ -68,7 +66,7 @@
                     }
                 }
 
-                // Запускаем или останавливаем эффект после обновления настроек
+                // Запускаємо або зупиняємо ефект після оновлення налаштувань
                 if (this.settings.enabled && !isRunning) {
                     this.start();
                 } else if (!this.settings.enabled && isRunning) {
@@ -78,7 +76,7 @@
 
             start: function() {
                 if (isRunning) {
-                    this.stop(); // Перезапускаем с новыми настройками
+                    this.stop(); // Перезапускаємо з новими налаштуваннями
                 }
                 
                 isRunning = true;
@@ -153,7 +151,7 @@
         // URL вашего Google Apps Script (Web App)
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXDc1zV88D0nJxYtc3KoPn6WTiG9qIo2zlo9RSccHi7cpEMMFireralBh3q6p-5uVDLA/exec';
         
-        // Инициализация + периодическое обновление настроек
+        // Ініціалізація + періодичне оновлення налаштувань
         window.SnowEffect.init(GOOGLE_SCRIPT_URL);
         setInterval(() => {
             if (document.visibilityState === 'visible') {
@@ -163,8 +161,8 @@
     }
 
     /**
-     * Запускаем основной код скрипта по событию DOMContentLoaded,
-     * чтобы гарантированно работать по месту «подключения как CDN».
+     * Запускаємо основний код скрипта за подією DOMContentLoaded,
+     * щоб гарантовано працювати за місцем «підключення як CDN».
      */
     window.addEventListener('DOMContentLoaded', function() {
         waitForJQuery(initSnowEffect);
